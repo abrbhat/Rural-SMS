@@ -5,7 +5,6 @@
  * @authors Cliff Ingham <inghamn@bloomington.in.gov>,Abhiroop Bhatnagar <bhatnagarabhiroop@gmail.com>
  */
 include '../configuration.inc';
-LanguageBlockList::initializeConstants();
 
 // Check for routes
 if (preg_match('|'.BASE_URI.'(/([a-zA-Z0-9]+))?(/([a-zA-Z0-9]+))?|',$_SERVER['REQUEST_URI'],$matches)) {

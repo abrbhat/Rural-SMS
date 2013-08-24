@@ -20,7 +20,7 @@ $ZEND_ACL->add(new Zend_Acl_Resource('login'));
 $ZEND_ACL->add(new Zend_Acl_Resource('configuration'));
 $ZEND_ACL->add(new Zend_Acl_Resource('simulator'));
 $ZEND_ACL->add(new Zend_Acl_Resource('SMSinterface'));
-$ZEND_ACL->add(new Zend_Acl_Resource('language'));
+$ZEND_ACL->add(new Zend_Acl_Resource('scheduledSMS'));
 
 /**
  * Assign permissions to the resources
