@@ -46,5 +46,22 @@ class ScheduledSMS
 		$id=$zend_db->quoteInto('id =?',$id);
 		$zend_db->update('scheduled_sms', $data, $id);
 	}
+	public function sendSMSfor($user)
+	{	
+		$date1=new DateTime();
+		foreach ($this->scheduledSMSList as $scheduledSMSId=>$scheduledSMSdata)
+		{		
+			$date2 = new DateTime($user['dob_of_child']);
+			$interval = $date1->diff($date2);			
+			if(($interval->y==$scheduledSMSdata['year'])&&($interval->m==$scheduledSMSdata['month'])&&($interval->d==$scheduledSMSdata['day']))
+			{	
+				self::dispatchSMS($user['phone_number'],$scheduledSMSdata['content']);
+			}
+		}
+	}
+	public function dispatchSMS($phoneNumber,$SMScontent)
+	{
+		echo $phoneNumber.' '.$SMScontent.'</br>';
+	}
 }
 ?>

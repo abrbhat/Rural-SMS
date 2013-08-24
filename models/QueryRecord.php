@@ -48,6 +48,20 @@ class QueryRecord
 			return NULL;
 		}	
 	}
+	public static function getAllRecords()
+	{
+		$zend_db = Database::getConnection();
+		$sql = 'select * from query_record';
+		$result = $zend_db->fetchAll($sql);
+		if($result)
+		{
+			return $result;
+		}
+		else
+		{		
+			return NULL;
+		}	
+	}
 }
 
 ?>

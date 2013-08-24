@@ -22,5 +22,15 @@ class ScheduledSMSController extends Controller
 		$scheduledSMSList=$scheduledSMS->getArray();		
 		$this->template->blocks[]=new Block('scheduledSMSList.inc',array('scheduledSMSList'=>$scheduledSMSList));
 	}
+	public function sendBurstSMS()
+	{
+		$scheduledSMS= new ScheduledSMS;		
+		$users=QueryRecord::getAllRecords();
+		foreach ($users as $user)
+		{
+			$scheduledSMS->sendSMSfor($user);
+		}
+	}
+		
 }
 ?>

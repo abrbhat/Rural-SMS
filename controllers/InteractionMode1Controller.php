@@ -42,7 +42,7 @@ class InteractionMode1Controller extends SMSController
 				}
 				else
 				{
-					$_SESSION['SMSErrorMessage'][]=SMS_ERROR_INCORRECT_RESPONSE;
+					$_SESSION['SMSErrorMessage'][]='You have sent an incorrect response';
 					return;
 				}
 				break;

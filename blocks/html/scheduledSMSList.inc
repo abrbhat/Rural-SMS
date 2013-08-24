@@ -35,9 +35,9 @@
 			$html.=	'</select></td>';
 			$html.='<td>
 			        <select name="'.$scheduledSMSid.'[month]" class="form-control" value="'.$scheduledSMSdata['month'].'" >';
-			for($i=1;$i<=12;$i++)
+			for($i=0;$i<=12;$i++)
 			{	
-				if($i!=$scheduledSMSdata['day'])
+				if($i!=$scheduledSMSdata['month'])
 					$html.='<option value='.$i.'>'.$i.'</option>';
 				else
 					$html.='<option value='.$i.' selected>'.$i.'</option>';
@@ -45,9 +45,9 @@
 			$html.=	'</select></td>';
 			$html.='<td>
 			<select name="'.$scheduledSMSid.'[year]" class="form-control" value="'.$scheduledSMSdata['year'].'" >';
-			for($i=1;$i<=10;$i++)
+			for($i=0;$i<=10;$i++)
 			{	
-				if($i!=$scheduledSMSdata['day'])
+				if($i!=$scheduledSMSdata['year'])
 					$html.='<option value='.$i.'>'.$i.'</option>';
 				else
 					$html.='<option value='.$i.' selected>'.$i.'</option>';
