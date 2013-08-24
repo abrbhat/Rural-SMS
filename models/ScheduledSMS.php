@@ -19,24 +19,31 @@ class ScheduledSMS
 	}
 	public function handleUpdate($post)
 	{		
-		$fields = array_keys(self::getArray());
-		foreach ($fields as $field) 
+		$ids = array_keys(self::getArray());
+		foreach ($ids as $id) 
 		{
-			if (isset($post[$field]['content'])) 
+			if (isset($post[$id])) 
 			{
-				self::set($fiel);
+				self::set($id,$post[$id]);
 			}
-		}
+			$zend_db = Database::getConnection();
+			$result=$zend_db->query('SELECT id,content,day,month,year FROM scheduled_sms');
+			$result=$result->fetchAll();
+			foreach($result as $row)
+				{
+					$this->scheduledSMSList[$row['id']]=array('content'=>$row['content'],'day'=>$row['day'],'month'=>$row['month'],'year'=>$row['year']);
+				}
+			}
 	}
 	public function getArray()
 	{
 		return $this->scheduledSMSList;
 	}
-	public function set($id,$content,$day,$month,$year)
+	public function set($id,$data)
 	{
 		$zend_db = Database::getConnection();
-		$data = array('content'=>$content,'day'=>$day,'month'=>$month,'year'=>$year);
-		$blockName=$zend_db->quoteInto('id =?',$id);
+		$data = array('content'=>$data['content'],'day'=>(int)$data['day'],'month'=>$data['month'],'year'=>$data['year']);
+		$id=$zend_db->quoteInto('id =?',$id);
 		$zend_db->update('scheduled_sms', $data, $id);
 	}
 }

@@ -5,36 +5,62 @@
  * @author Abhiroop Bhatnagar <bhatnagarabhiroop@gmail.com>
  * @param language $this->scheduledSMSList
  */
-echo var_dump($this->scheduledSMSList);
-echo '</br>';
+
 ?>
 
 
 <div class="container">
 	<h2>Scheduled SMS</h2>
-	<form method="post" action="<?php echo $_SERVER['REDIRECT_URL']; ?>" class='form-horizontal'>
-		<fieldset>
+	<form method="post" action="<?php echo $_SERVER['REDIRECT_URL']; ?>">
 		<?php	
-		$html='<table class="table">';
-		foreach ($this->scheduledSMSList as $scheduledSMS)
+		$html='<table class="table" id="SMStable">';
+		$html.='<tr><td>SMS Content</td>
+			<td>Day</td>
+			<td>Month</td>
+			<td>Year</td>
+			<td>Remove</td></tr>';
+		foreach ($this->scheduledSMSList as $scheduledSMSid=>$scheduledSMSdata)
 		{
-			echo var_dump($scheduledSMS);
 			$html.='<tr><td>
-			        <input name="['.$id.'][content]" class="form-control" id="['.$id.'][content]" value="'.View::escape($this->scheduledSMSList[$id]['content']).'" /></td>';
+			        <input name="'.$scheduledSMSid.'[content]" class="form-control" id="listContent" value="'.View::escape($scheduledSMSdata['content']).'" /></td>';
 			$html.='<td>
-			        <input name="['.$id.'][day]" class="form-control" id="['.$id.'][day]" value="'.View::escape($this->scheduledSMSList[$id]['day']).'" /></td>';
+			        <select name="'.$scheduledSMSid.'[day]" class="form-control" >';
+			for($i=1;$i<=31;$i++)
+			{	
+				if($i!=$scheduledSMSdata['day'])
+					$html.='<option value='.$i.'>'.$i.'</option>';
+				else
+					$html.='<option value='.$i.' selected>'.$i.'</option>';
+			}	
+			$html.=	'</select></td>';
 			$html.='<td>
-			        <input name="['.$id.'][month]" class="form-control" id="['.$id.'][month]" value="'.View::escape($this->scheduledSMSList[$id]['month']).'" /></td>';
+			        <select name="'.$scheduledSMSid.'[month]" class="form-control" value="'.$scheduledSMSdata['month'].'" >';
+			for($i=1;$i<=12;$i++)
+			{	
+				if($i!=$scheduledSMSdata['day'])
+					$html.='<option value='.$i.'>'.$i.'</option>';
+				else
+					$html.='<option value='.$i.' selected>'.$i.'</option>';
+			}	
+			$html.=	'</select></td>';
 			$html.='<td>
-			        <input name="['.$id.'][year]" class="form-control" id="['.$id.'][year]" value="'.View::escape($this->scheduledSMSList[$id]['year']).'" /></td>';
+			<select name="'.$scheduledSMSid.'[year]" class="form-control" value="'.$scheduledSMSdata['year'].'" >';
+			for($i=1;$i<=10;$i++)
+			{	
+				if($i!=$scheduledSMSdata['day'])
+					$html.='<option value='.$i.'>'.$i.'</option>';
+				else
+					$html.='<option value='.$i.' selected>'.$i.'</option>';
+			}	
+			$html.=	'</select></td>';
+			$html.='<td><button type="button" class="btn btn-danger btn-lg remove">Remove</button></td>';
 			$html.='</tr>';       
-			
 		}
-			$html.='</table>';
+		$html.='</table>';
 		echo $html;
 		?>		
-
-		<button type="submit" class="btn btn-primary">Submit</button>
+		<button class="btn btn-info addnew">Add Another Row</button>
+		<button type="submit" class="btn btn-success">Submit</button>
 			<?php
 				if (isset($_REQUEST['return_url'])) {
 					$return_url = urlencode($_REQUEST['return_url']);

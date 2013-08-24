@@ -8,16 +8,16 @@ class QueryRecord
 {
 	protected $tablename = 'query_record';
 	protected $data=array();
-	public static function save($interaction_mode,$previous_page,$additional_info=NULL)
+	public static function save($previous_page,$dob=NULL,$location=NULL)
 	{
 		$incomingSMS=new IncomingSMS;
 		$from=$incomingSMS->getFrom();
 		$zend_db = Database::getConnection();
 		$data = array(
-		    'phone_number'    => $from,
-		    'interaction_mode'=> $interaction_mode,
 		    'previous_page'   => $previous_page,
-		    'additional_info' => $additional_info	
+		    'dob_of_child' => $dob,
+		    'location' => $location,
+		    'phone_number' => $from
 		);
 		$sql = 'select * from query_record where phone_number=?';
 		$result = $zend_db->fetchRow($sql, $from);

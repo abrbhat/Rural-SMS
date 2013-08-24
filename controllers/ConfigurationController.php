@@ -16,7 +16,7 @@ class ConfigurationController extends Controller
 	}
 	public function update()
 	{
-		if (isset($_POST['serviceDiscoveryURL'])) 
+		if (isset($_POST['SMSCharacterLimit'])) 
 		{
 			ConfigurationList::handleUpdate($_POST);
 			try {

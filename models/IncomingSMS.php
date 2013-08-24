@@ -60,6 +60,8 @@ class IncomingSMS
 		{
 			--$subKeywordIndex;
 		}
+		$interactionMode=1;
+		/*
 		switch($this->smsBodyPieces[$subKeywordIndex])
 		{
 			case SUB_KEYWORD_GET_SERVICE_CODES   :{$interactionMode=1;break;}
@@ -68,47 +70,18 @@ class IncomingSMS
 			case SUB_KEYWORD_HELP                :{$interactionMode=4;break;}	
 			default :{$interactionMode=NULL;}	
 		}
+		*/
 		return $interactionMode;
 	}
 	public function getSubKeyword()
 	{
-		$SubKeywordIndex=1;		
-		if (ConfigurationList::get('useSMSKeyword')=='No')
-		{
-			--$SubKeywordIndex;
-		}
-
-		switch($this->smsBodyPieces[$SubKeywordIndex])
-		{
-			case SUB_KEYWORD_GET_SERVICE_CODES   :{return SUB_KEYWORD_GET_SERVICE_CODES;}
-			case SUB_KEYWORD_SUBMIT_REQUEST      :{return SUB_KEYWORD_SUBMIT_REQUEST;}	
-			case SUB_KEYWORD_CHECK_REQUEST_STATUS:{return SUB_KEYWORD_CHECK_REQUEST_STATUS;}	
-			case SUB_KEYWORD_HELP                :{return SUB_KEYWORD_HELP;}
-			case SUB_KEYWORD_MORE                :{return SUB_KEYWORD_MORE;}
-			case SUB_KEYWORD_SKIP 		     :{return SUB_KEYWORD_SKIP;}
-			default 			     :{return NULL;}	
-		}
+		return NULL;
 	}	
-	public function getServiceCode()	
-	{
-		$serviceCodeIndex=2;
-		if(ConfigurationList::get('useSMSKeyword')=='No') {-- $serviceCodeIndex; }
-		if(is_null(self::getSubkeyword())) {-- $serviceCodeIndex; }
-		if((isset($this->smsBodyPieces[$serviceCodeIndex]))&&(preg_match('/^'.SERVICE_OPTIONS_PREFIX.'[0-9]*$/i',$this->smsBodyPieces[$serviceCodeIndex],$matches)))
-		{
-			return $this->smsBodyPieces[$serviceCodeIndex];
-		}
-		else	
-		{
-			return NULL;
-		}
-	}
+	
 	public function getQueryText()	
 	{
-		$queryTextIndex=3;
-		if(ConfigurationList::get('useSMSKeyword')=='No') {-- $queryTextIndex; }
-		if(is_null(self::getSubkeyword())) {-- $queryTextIndex; }
-		if(is_null(self::getServiceCode())) {-- $queryTextIndex; }		
+		$queryTextIndex=1;
+		if(ConfigurationList::get('useSMSKeyword')=='No') {-- $queryTextIndex; }		
 		/* 
 		 *All the pieces after Keyword and subKeyword are QueryText
 		 */	

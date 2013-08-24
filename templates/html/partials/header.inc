@@ -13,6 +13,7 @@
 	</script>
 
 	<script src="<?php echo BASE_URI;?>/js/textingSimulator.js"></script>
+	<script src="<?php echo BASE_URI;?>/js/scheduledSMSList.js"></script>
 
 	<title><?php echo $this->title ? View::escape($this->title) : APPLICATION_NAME; ?></title>
 </head>

@@ -11,15 +11,16 @@ CREATE TABLE `configuration` (
 );
 
 INSERT INTO `configuration` VALUES
-(1,'useSMSKeyword','No'),
-(2,'SMSKeyword','keyword'),
-(3,'SMSResponseFormat','html'),
-(4,'SMSBodyParameter','Body'),
-(5,'SMSFromParameter','From'),
-(6,'APIKeyRequired','Yes'),
-(7,'SMSAPIKeyParameter','api_key_param'),
-(8,'SMSAPIKey','api_key'),
-(9,'language','en');
+(1,'SMSCharacterLimit','160'),
+(2,'useSMSKeyword','No'),
+(3,'SMSKeyword','keyword'),
+(4,'SMSResponseFormat','html'),
+(5,'SMSBodyParameter','Body'),
+(6,'SMSFromParameter','From'),
+(7,'APIKeyRequired','Yes'),
+(8,'SMSAPIKeyParameter','api_key_param'),
+(9,'SMSAPIKey','api_key'),
+(10,'language','en');
 
 CREATE TABLE `people` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -43,20 +44,12 @@ CREATE TABLE `scheduled_sms` (
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `registered_users` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `dob_of_child` date NOT NULL,
-  `location` int(31) NOT NULL,
-  PRIMARY KEY (`id`)
-);
-
-
 CREATE TABLE `query_record` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `phone_number` varchar(20) NOT NULL,
-  `interaction_mode` int(2) NOT NULL,
+  `dob_of_child` date,
   `previous_page` varchar(255) NOT NULL,
-  `additional_info` text,
+  `location` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `phone_number` (`phone_number`)
 );

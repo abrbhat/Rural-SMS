@@ -11,110 +11,52 @@ class InteractionMode1Controller extends SMSController
 		
 		
 	}
-	public function __construct(Template $template,$endpoint,$xmlServiceList)
+	public function __construct(Template $template)
 	{
-		parent::__construct($template,$endpoint,$xmlServiceList);
+		parent::__construct($template);
 	}	
 	public function generateFirstPageResponse()
 	{	
 		$page='1';
-		$list=self::getList(ConfigurationList::get('getServiceListResponse'));
-		$pages=SMSPages::constructServiceListPages($list,ConfigurationList::get('getServiceListResponse'));
-		QueryRecord::save(1,$page,ConfigurationList::get('getServiceListResponse'));
-		$this->template->smsBlocks=$pages['page'.$page];		
+		$response1='Reply with date of birth of child(dd-mm-yyyy)';
+		QueryRecord::save($page);
+		$this->template->smsBlocks['content']=$response1;		
 	}
 	public function handleReplySMS()
 	{
 		$list=array();
 		$incomingSMS=new IncomingSMS;
 		$previousQuery=QueryRecord::getRecord($incomingSMS->getFrom());
-
-		if(  ($incomingSMS->getSubKeyword()==SUB_KEYWORD_MORE)&&
-				   ( ($previousQuery['additional_info']=='GROUPS')||
-					($previousQuery['additional_info']=='SERVICES') ) )
+		$response2='Reply with your village/town/city.';
+		$response3='Your child has been registered with the information program.';
+		$page=$previousQuery['previous_page'];
+		$string=$incomingSMS->getQueryText();
+		switch ($previousQuery['previous_page'])
 		{
-			$page=$previousQuery['previous_page']+1;
-			$type=$previousQuery['additional_info'];	
-		}				
-		else 
-		{
-			if(self::findGroupNumber($incomingSMS->getQueryText()))
-			{
-				$groupCode=$incomingSMS->getQueryText();
-				$page=1;
-				$type=$groupCode;			
-			}
-			else if (($incomingSMS->getSubKeyword()==SUB_KEYWORD_MORE)&&(self::findGroupNumber($previousQuery['additional_info'])))
-			{
-				$groupCode=$previousQuery['additional_info'];
-				$page=$previousQuery['previous_page']+1;
-				$type=$groupCode;
-			}
-			else
-			{
-				$_SESSION['SMSErrorMessage'][]=SMS_ERROR_INCORRECT_RESPONSE;
+			case 1:
+				if(preg_match('/^(([0-9][0-9])-([0-9][0-9])-([0-9][0-9][0-9][0-9]))$/i',$string,$matches))
+				{
+					$response=$response2;
+					$dateOfBirth=$matches[4].'-'.$matches[3].'-'.$matches[2];
+					$location=NULL;
+				}
+				else
+				{
+					$_SESSION['SMSErrorMessage'][]=SMS_ERROR_INCORRECT_RESPONSE;
+					return;
+				}
+				break;
+			case 2:
+				$dateOfBirth=$previousQuery['dob_of_child'];
+				$location=$incomingSMS->getQueryText();
+				$response=$response3;
+				break;
+			default:
+				$_SESSION['SMSErrorMessage'][]='Invalid Response';
 				return;
-			}
-			
-		}
-		$list=self::getList($type);
-		$listType=self::getListType($type);
-		$pages=SMSPages::constructServiceListPages($list,$listType);
-		if($page<=count($pages))
-		{	
-			QueryRecord::save(1,$page,$type);
-			$this->template->smsBlocks=$pages['page'.$page];	
-		}
-		else
-		{
-			$_SESSION['SMSErrorMessage'][]=SMS_ERROR_INCORRECT_RESPONSE;
-			return;
-		}
-	}	
-	private static function findGroupNumber($string)
-	{
-		if(preg_match('/^'.GROUP_OPTIONS_PREFIX.'([0-9]*$)/i', $string,$matches))
-		{
-			return $matches[1]; 
-		}
-		else
-		{
-			return 0;
-		}
-	}
-	private function getList($type)
-	{
-		$list=array();
-		if($type=='GROUPS')
-		{
-			//Get list of Groups
-			$list=ServiceList::getGroupList($this->xmlServiceList);	
-		}
-		else if($type=='SERVICES')
-		{
-			//Get list of all Services
-			$list=ServiceList::getServiceList($this->xmlServiceList);
-		}
-		else		
-		{
-			//$type contains Group Code. Get list of services under that Group.
-			$groupList=ServiceList::getGroupList($this->xmlServiceList);
-			$groupNumber=self::findGroupNumber($type);
-			$groupName=$groupList[$groupNumber];
-			$list=ServiceList::getServiceList($this->xmlServiceList,$groupName);
 		}	
-		return $list;	
-	}
-	private function getListType($type)
-	{
-		if(($type=='GROUPS')||($type=='SERVICES'))
-		{
-			$listType=$type;
-		}
-		else
-		{
-			$listType='SERVICES';
-		}
-		return $listType;
-	}
+		$page++;	
+		QueryRecord::save($page,$dateOfBirth,$location);
+		$this->template->smsBlocks['content']=$response;	
+	}	
 }

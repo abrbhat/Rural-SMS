@@ -13,39 +13,7 @@
 	<h2>Configuration Panel</h2>
 	<form method="post" action="<?php echo $_SERVER['REDIRECT_URL']; ?>" class='form-horizontal'>
 		<fieldset><legend>Configuration</legend>
-		<div class='form-group'>
-			<label for="serviceDiscoveryURL" class="col-lg-2 control-label">Service Discovery URL</label>
-			<div class='col-lg-10'>
-			<input name="serviceDiscoveryURL" class="form-control" id="serviceDiscoveryURL" value="<?php echo View::escape($this->configurationList['serviceDiscoveryURL']); ?>" />
-			</div>
-      		</div>
-
-		<div class='form-group'>	
-			<label for="open311APIKey" class="col-lg-2 control-label">Open311 APIKey</label></td>
-			<div class='col-lg-10'>
-			<input name="open311APIKey" class="form-control" id="open311APIKey" value="<?php echo View::escape($this->configurationList['open311APIKey']); ?>" />
-			</div>
-	   	</div>
-
-		<div class='form-group'>
-			<label for="open311JurisdictionId" class="col-lg-2 control-label">Open311 Jurisdiction Id</label>
-			<div class='col-lg-10'>
-			<input name="open311JurisdictionId" class="form-control" id="open311JurisdictionId" value="<?php echo View::escape($this->configurationList['open311JurisdictionId']);  ?>" />
-			</div>
-		</div>
 			
-		<div class='form-group'>
-			<label for="getServiceListResponse" class="col-lg-2 control-label">Response to Get Service List Interaction Mode</label>
-			<div class='col-lg-10'>	
-				<label class="radio-inline">
-					<input type="radio" name="getServiceListResponse" id="GROUPS" value="GROUPS" <?php  if(View::escape($this->configurationList['getServiceListResponse'])=='GROUPS') echo 'checked' ;?> >Return list of Groups
-				</label>
-				<label class="radio-inline">
-					<input type="radio" name="getServiceListResponse" id="SERVICES" value="SERVICES" <?php  if(View::escape($this->configurationList['getServiceListResponse'])=='SERVICES') echo 'checked' ;?>>Return list of Services
-				</label>
-			</div>
-		</div>			
-		
 		<div class='form-group'>
 			<label for="SMSCharacterLimit" class="col-lg-2 control-label">SMS Character Limit</label></td>
 		

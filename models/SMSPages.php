@@ -39,68 +39,7 @@ class SMSPages
 		$pages['page'.$pageNumber]['tail']='';	
 		return $pages;
 	}	
-	public static function constructMetadataResponsePages($attributeList,$attributeNumber)
-	{	
-		$pages=array();
-		$attributeProperties=$attributeList[$attributeNumber];
-		$datatype=strtoupper($attributeProperties['datatype']);
-			
-		$pages['page1']['head']=constant($datatype.'_DATATYPE_RESPONSE_TEXT_1');
-		$pages['page1']['head'].=$attributeProperties['description'];
-		$pages['page1']['head'].=constant($datatype.'_DATATYPE_RESPONSE_TEXT_2');
-		$pages['page1']['tail'] = MORE_OPTIONS_TEXT;
-		$characterCount=strlen(htmlspecialchars_decode($pages['page1']['head']))+
-					strlen(htmlspecialchars_decode($pages['page1']['tail']));
-		
-		$pageNumber=1;		
-		if(($attributeProperties['datatype']=='singlevaluelist')||($attributeProperties['datatype']=='multivaluelist'))
-		{
-			$j=1;
-			$i=1;
-			foreach($attributeProperties['values'] as $key => $value)
-			{
-				$smsBlock=self::optimize(constant($datatype.'_OPTIONS_PREFIX').$j.'-'.$value.';');
-				$characterCount=$characterCount+strlen(htmlspecialchars_decode($smsBlock));
-				// Go to next page if characterCount increases about Character Limit
-				if($characterCount>=(int)ConfigurationList::get('SMSCharacterLimit'))
-				{
-					$pageNumber++;
-					$pages['page'.$pageNumber]=array();
-					$pages['page'.$pageNumber]['head'] = OPTIONS_TEXT;
-					$pages['page'.$pageNumber]['tail'] = MORE_OPTIONS_TEXT;
-					$characterCount=strlen(htmlspecialchars_decode($pages['page'.$pageNumber]['head']))
-								+strlen(htmlspecialchars_decode($pages['page'.$pageNumber]['tail']));
-					$characterCount=$characterCount+strlen(htmlspecialchars_decode($smsBlock));
-					$i=1;	
-				}
-				$pages['page'.$pageNumber][$i] = $smsBlock;  
-				++$i;
-				++$j;
-			}
-			$lastPageCharacterCount=$characterCount;
-			$lastPageTail=($attributeProperties['required']=='false')?REPLY_TO_SKIP:'';
-			if ($characterCount
-				-strlen(htmlspecialchars_decode($pages['page'.$pageNumber]['tail']))
-				+strlen(htmlspecialchars_decode($lastPageTail))
-					>=(int)ConfigurationList::get('SMSCharacterLimit'))
-			{
-				$pageNumber++;
-				$pages['page'.$pageNumber] = array();
-				$pages['page'.$pageNumber]['head'] = $lastPageTail;
-				$tailAdded=TRUE;
-			}	
-			else
-			{		
-				self::removeIfLastPageNotRequired($pages,$pageNumber,$lastPageCharacterCount);
-				$tailAdded=FALSE;	
-			}
-		}
-		if (!$tailAdded)
-		{
-			$pages['page'.$pageNumber]['tail']=($attributeProperties['required']=='false')?REPLY_TO_SKIP:'';
-		}	
-		return $pages;
-	}
+	
 	public static function returnHelpPages($interactionMode,$pageNumber)
 	{
 		$helpPages=array(

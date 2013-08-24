@@ -16,11 +16,10 @@ class ScheduledSMSController extends Controller
 	}
 	public function update()
 	{
-		$scheduledSMS= new ScheduledSMS;
+		$scheduledSMS= new ScheduledSMS;		
 		$scheduledSMS->handleUpdate($_POST);		
 		$scheduledSMS= new ScheduledSMS;
-		echo var_dump($scheduledSMS);
-		$scheduledSMSList=$scheduledSMS->getArray();	
+		$scheduledSMSList=$scheduledSMS->getArray();		
 		$this->template->blocks[]=new Block('scheduledSMSList.inc',array('scheduledSMSList'=>$scheduledSMSList));
 	}
 }

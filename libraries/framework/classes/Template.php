@@ -189,14 +189,7 @@ class Template extends View
 		ob_start();
 		if(!isset($_SESSION['SMSErrorMessage']))
 		{
-			$outgoingSMS= $this->smsBlocks['head'];	
-			foreach($this->smsBlocks as $key=>$value)
-			{	
-				if(($key!='head')&&($key!='tail'))
-					$outgoingSMS.= $value;
-			}
-			if(isset($this->smsBlocks['tail']))
-				$outgoingSMS.= $this->smsBlocks['tail'];
+			$outgoingSMS= $this->smsBlocks['content'];	
 		}
 		else
 		{

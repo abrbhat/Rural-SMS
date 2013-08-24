@@ -26,49 +26,19 @@ class SMSinterfaceController extends Controller
 		 * SUB_KEYWORD_CHECK_REQUEST_STATUS:$interactionMode=3
 	 	 * SUB_KEYWORD_HELP                :$interactionMode=4
 		 */
-		$interactionMode = $incomingSMS->getInteractionMode();
-		if(!isset($interactionMode))
-		{	
-			//No interaction mode present. Checking whether incoming SMS is a reply SMS.
-			$previousQuery=QueryRecord::getRecord($incomingSMS->getFrom());
-			if(!isset($previousQuery))
-			{
-				$_SESSION['SMSErrorMessage'][] = SMS_ERROR_INCORRECT_RESPONSE;
-			}
-			$interactionMode=$previousQuery['interaction_mode'];
-			$action='handleReplySMS';		
-		}
-		else
+		$previousQuery=QueryRecord::getRecord($incomingSMS->getFrom());
+		if(!isset($previousQuery))
 		{
 			$action='generateFirstPageResponse';
-		}
-		if(isset($interactionMode))
-			$resource='InteractionMode'.$interactionMode;
-		
-		$xmlurlServiceDiscovery = @file_get_contents(ConfigurationList::get('serviceDiscoveryURL'));  
-		if(!$xmlurlServiceDiscovery)
+		}				
+		else
 		{
-			$_SESSION['SMSErrorMessage'][] = SMS_ERROR_SERVER_PROBLEM;  
-			return;
-		}		
-		$xmlServiceDiscovery = simplexml_load_string($xmlurlServiceDiscovery, null, LIBXML_NOCDATA);
-		
-
-		//Find the valid and active endpoint from Service Discovery
-		foreach ($xmlServiceDiscovery->endpoints->endpoint as $endpoint) 
-		{
-	   		$endpointURL=(string)$endpoint->url;
-			if((string)$endpoint->type=='production')
-			{
-				$xmlurlServiceList = file_get_contents($endpointURL."/services.xml");    
-				$xmlServiceList = simplexml_load_string($xmlurlServiceList, null, LIBXML_NOCDATA);
-				if (isset($xmlServiceList->service[0]->service_code))
-					break;
-			}
+			$action='handleReplySMS';
 		}
+		$resource='InteractionMode1';
 		//Execute the Controller::Action
 		$controller = ucfirst($resource).'Controller';
-		$c = new $controller($this->template,$endpointURL,$xmlServiceList);
+		$c = new $controller($this->template);
 		$c->$action();
 	}
 }	

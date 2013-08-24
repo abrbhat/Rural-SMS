@@ -7,16 +7,10 @@
 abstract class SMSController extends Controller
 {
 	protected $template;
-	protected $endpoint;
-	protected $xmlServiceList;
-
 	abstract public function generateFirstPageResponse();
 	abstract public function handleReplySMS();
-
-	public function __construct(Template $template,$endpoint,$xmlServiceList)
+	public function __construct(Template $template)
 	{
 		parent::__construct($template);
-		$this->endpoint=$endpoint;    
-		$this->xmlServiceList = $xmlServiceList;
 	}
 }
