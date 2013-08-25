@@ -13,14 +13,11 @@ $(document).ready(function(){
 					success:function(xml){
 						$("#SMSResponse").empty();
 						var data = $('Sms',xml).text();
+						var user = $('User',xml).first().text();
 						$("#ScheduledSMSResponse").append('</br>');
 						$("#ScheduledSMSResponse").append('Day: '+days+' ');				
 		  				$("#ScheduledSMSResponse").append('Message: '+data);
 			 		},
-					error: function(){
-						$("#ScheduledSMSResponse").empty();
-						alert("Oops!Something went wrong.");
-					}
 				});
 			}, 100);
 			return false;

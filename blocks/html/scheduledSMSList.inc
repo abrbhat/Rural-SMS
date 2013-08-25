@@ -59,7 +59,7 @@
 		$html.='</table>';
 		echo $html;
 		?>		
-		<a href="<?php echo BASE_URI.'/scheduledSMS/addBlankRow';?>">Add Another Row</a>
+		<a class="btn btn-info" href="<?php echo BASE_URI.'/scheduledSMS/addBlankRow';?>">Add Another Row</a>
 		<button type="submit" class="btn btn-success">Submit</button>
 			<?php
 				if (isset($_REQUEST['return_url'])) {

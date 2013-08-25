@@ -6,7 +6,6 @@
  */
 ?>
 <h2>Scheduled SMS Simulator</h2>
-<h3>TIME</h3>
 <button type="button" class="btn btn-success" id="Start">Start</button>
 <h3><span id="Days"></span> Days
 <div id="ScheduledSMSResponse"></div></h3>

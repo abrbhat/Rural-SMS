@@ -7,8 +7,12 @@
  */
 
 $data=$this->DispatchList;
+$i=1;
 foreach($data as $message)
 {
-	echo'<Sms>'.$message.'</Sms>';
+ 	echo'<User>';
+		echo'<Sms>'.$message.'</Sms>';
+	echo'</User>';
+	$i++;
 }
 ?>
