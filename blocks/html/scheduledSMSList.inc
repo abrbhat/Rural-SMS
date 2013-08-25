@@ -18,7 +18,7 @@
 			<td>Day</td>
 			<td>Month</td>
 			<td>Year</td>
-			<td>Remove</td></tr>';
+			<td><button type="submit" class="btn btn-danger">Remove</button></td></tr>';
 		foreach ($this->scheduledSMSList as $scheduledSMSid=>$scheduledSMSdata)
 		{
 			$html.='<tr><td>
@@ -53,13 +53,13 @@
 					$html.='<option value='.$i.' selected>'.$i.'</option>';
 			}	
 			$html.=	'</select></td>';
-			$html.='<td><button type="button" class="btn btn-danger btn-lg remove">Remove</button></td>';
+			$html.='<td><input type="checkbox" value="y" name="'.$scheduledSMSid.'[checkbox]"></td>';
 			$html.='</tr>';       
 		}
 		$html.='</table>';
 		echo $html;
 		?>		
-		<button class="btn btn-info addnew">Add Another Row</button>
+		<a href="<?php echo BASE_URI.'/scheduledSMS/addBlankRow';?>">Add Another Row</a>
 		<button type="submit" class="btn btn-success">Submit</button>
 			<?php
 				if (isset($_REQUEST['return_url'])) {

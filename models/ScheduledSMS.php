@@ -1,12 +1,12 @@
 <?php
 /**
- * @copyright 2009-2013 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Abhiroop Bhatnagar <bhatnagarabhiroop@gmail.com>
  */
 class ScheduledSMS
 {
 	private $scheduledSMSList=array();
+	public $markedSMS=array();
 	public function __construct()
 	{	
 		$zend_db = Database::getConnection();
@@ -33,7 +33,10 @@ class ScheduledSMS
 				{
 					$this->scheduledSMSList[$row['id']]=array('content'=>$row['content'],'day'=>$row['day'],'month'=>$row['month'],'year'=>$row['year']);
 				}
-			}
+			if(isset($post[$id]['checkbox']))
+				$n = $zend_db->delete('scheduled_sms', 'id = '.$id);
+		}
+		
 	}
 	public function getArray()
 	{
@@ -47,12 +50,14 @@ class ScheduledSMS
 		$zend_db->update('scheduled_sms', $data, $id);
 	}
 	public function sendSMSfor($user)
-	{	
+	{
 		$date1=new DateTime();
+		//Only for simulator
+		$date1=$date1->add(new DateInterval('P'.$_GET['days'].'D'));
 		foreach ($this->scheduledSMSList as $scheduledSMSId=>$scheduledSMSdata)
 		{		
 			$date2 = new DateTime($user['dob_of_child']);
-			$interval = $date1->diff($date2);			
+			$interval = $date1->diff($date2);	
 			if(($interval->y==$scheduledSMSdata['year'])&&($interval->m==$scheduledSMSdata['month'])&&($interval->d==$scheduledSMSdata['day']))
 			{	
 				self::dispatchSMS($user['phone_number'],$scheduledSMSdata['content']);
@@ -61,7 +66,19 @@ class ScheduledSMS
 	}
 	public function dispatchSMS($phoneNumber,$SMScontent)
 	{
-		echo $phoneNumber.' '.$SMScontent.'</br>';
+		/*
+			Call to API should be implemented here
+		*/
+
+		// Piping SMS to Simulator
+			$this->markedSMS[$phoneNumber]=$SMScontent;
+	}
+	public function removeRows()
+	{
+		echo var_dump($_POST);
+		$zend_db = Database::getConnection();
+		$n = $zend_db->delete('scheduled_sms', 'id = '.$id);	
+		header('Location: '.BASE_URI.'/scheduledSMS/update');
 	}
 }
 ?>

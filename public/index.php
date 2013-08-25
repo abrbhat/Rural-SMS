@@ -16,6 +16,10 @@ if ($resource=='SMSinterface')
 	$template = !empty($_REQUEST['format'])? new Template('SMS',$_REQUEST['format']) : new Template('SMS',ConfigurationList::get('SMSResponseFormat'));
 else if (($resource=='simulator')&&($action=='getResponse'))
 	$template = !empty($_REQUEST['format'])? new Template('simulator',$_REQUEST['format']) : new Template('simulator');
+else if (($resource=='scheduledSMS')&&($action=='sendBurstSMS'))
+	{
+	$template = new Template('scheduledSimulator','xml') ;
+	}
 else
 	$template = !empty($_REQUEST['format'])? new Template('default',$_REQUEST['format']) : new Template('default');
 	

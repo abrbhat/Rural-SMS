@@ -21,6 +21,8 @@ $ZEND_ACL->add(new Zend_Acl_Resource('configuration'));
 $ZEND_ACL->add(new Zend_Acl_Resource('simulator'));
 $ZEND_ACL->add(new Zend_Acl_Resource('SMSinterface'));
 $ZEND_ACL->add(new Zend_Acl_Resource('scheduledSMS'));
+$ZEND_ACL->add(new Zend_Acl_Resource('scheduledSMSSimulator'));
+
 
 /**
  * Assign permissions to the resources

@@ -30,7 +30,17 @@ class ScheduledSMSController extends Controller
 		{
 			$scheduledSMS->sendSMSfor($user);
 		}
-	}
+		// Executing Simulator for trial
 		
+		$scheduledSMSDispatchList=$scheduledSMS->markedSMS;
+		$this->template->blocks[]=new Block('scheduledSimulatorResponse.inc',array('DispatchList'=>$scheduledSMSDispatchList));
+	}
+	public function addBlankRow()
+	{
+		$zend_db = Database::getConnection();
+		$data = array('content'=>'Enter SMS here','day'=>1,'month'=>0,'year'=>0);
+		$zend_db->insert('scheduled_sms', $data);	
+		header('Location: '.BASE_URI.'/scheduledSMS/update');
+	}
 }
 ?>
